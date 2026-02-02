@@ -39,11 +39,13 @@ class Player(Character):
     
     @entity_interaction
     def examine_entity(self, entity):
+        # TODO: test
         return entity.description
     
     @entity_interaction
     def search(self, container):
-        return container.list_items()
+        # TODO: test
+        return container.show_contents()
     
     @entity_interaction
     def loot(self, container, item):
