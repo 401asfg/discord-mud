@@ -6,15 +6,15 @@ class TravelException(Exception):
 
 
 class Character(Entity):
-    def __init__(self, name, description, level, room):
+    def __init__(self, name, description, entity_status, level, room):
         # TODO: test
         if room not in level:
             raise ValueError(f"Room {room} does not exist in level.")
 
-        super().__init__(name, description)
+        super().__init__(name, description, entity_status)
         self.level = level
         self.room = room
-    
+
     def goto(self, room):
         # TODO: test
         if room == self.room:

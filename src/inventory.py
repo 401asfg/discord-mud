@@ -34,3 +34,19 @@ class Inventory(ABC):
     
     def list_items(self):
         return self._items
+    
+    @staticmethod
+    def _transact(sending_inventory, receiving_inventory, item, capacity_exception_msg):
+        if not receiving_inventory.can_add_item(item):
+            raise InventoryCapacityException(capacity_exception_msg)
+
+        item = sending_inventory.remove_item(item)
+        receiving_inventory.add_item(item)
+    
+    def send(self, receiving_inventory, item, capacity_exception_msg):
+        # TODO: test
+        self._transact(self, receiving_inventory, item, capacity_exception_msg)
+    
+    def receive(self, sending_inventory, item, capacity_exception_msg):
+        # TODO: test
+        self._transact(sending_inventory, self, item, capacity_exception_msg)
