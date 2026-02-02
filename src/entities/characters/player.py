@@ -7,7 +7,7 @@ class DistanceException(Exception):
     pass
 
 
-class Squaddie(Character):
+class Player(Character):
     def __init__(
         self,
         name,
@@ -64,12 +64,12 @@ class Squaddie(Character):
         )
     
     @entity_interaction
-    def give(self, squaddie, item):
+    def give(self, player, item):
         # TODO: test
         self.inventory.send(
-            squaddie.inventory,
+            player.inventory,
             item,
-            "Cannot give item without the other squaddie going over inventory capacity."
+            "Cannot give item without the other player going over inventory capacity."
         )
     
     def pickup(self, item):
