@@ -34,6 +34,7 @@ class Player(Character):
         return self.room.purpose
     
     def examine_room_description(self):
+        # FIXME: describe floor inventory items
         return self.room.description
     
     @entity_interaction
@@ -69,6 +70,22 @@ class Player(Character):
             player.inventory,
             item,
             "Cannot give item without the other player going over inventory capacity."
+        )
+    
+    def pickup(self, item):
+        # TODO: test
+        self.inventory.receive(
+            self.room.floor_inventory,
+            item,
+            "Cannot pick up item without going over inventory capacity."
+        )
+    
+    def drop(self, item):
+        # TODO: test
+        self.inventory.send(
+            self.room.floor_inventory,
+            item,
+            "There is no more room on the floor to drop items."
         )
     
     # TODO: implement

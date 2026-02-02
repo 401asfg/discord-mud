@@ -1,12 +1,17 @@
 from src.game import levels
+from src.inventories.slotted_inventory import SlottedInventory
 
 
 class Room:
+    INVENTORY_SLOT_COUNT = 5
+
     def __init__(self, name, purpose, description, non_door_entities=[]):
         self.name = name
         self.purpose = purpose
         self.description = description
         self.non_door_entities = non_door_entities
+
+        self.floor_inventory = SlottedInventory(self.INVENTORY_SLOT_COUNT)
         self._level = None
 
     @property
