@@ -1,13 +1,20 @@
 from abc import ABC, abstractmethod
 
 
-class InventoryAddItemException(Exception):
+class InventoryCapacityException(Exception):
+    pass
+
+
+class ItemNotFoundException(Exception):
     pass
 
 
 class Inventory(ABC):
     def __init__(self):
-        self._items = []
+        self._items = set()
+    
+    def __contains__(self, item):
+        return item in self._items
 
     @abstractmethod
     def can_add_item(self, item):
@@ -15,14 +22,15 @@ class Inventory(ABC):
     
     def add_item(self, item):
         if not self.can_add_item(item):
-            raise InventoryAddItemException("Cannot add item to inventory.")
+            raise InventoryCapacityException("Cannot add item to inventory.")
 
-        self._items.append(item)
+        self._items.add(item)
     
     def remove_item(self, item):
-        # TODO: test
+        if item not in self._items:
+            raise ItemNotFoundException(f"Item {item} not found in inventory.")
+
         return self._items.remove(item)
     
     def list_items(self):
-        # TODO: test
         return self._items

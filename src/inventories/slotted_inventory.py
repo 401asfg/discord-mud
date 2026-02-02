@@ -1,4 +1,4 @@
-from inventory import Inventory
+from src.inventory import Inventory
 
 
 class SlottedInventory(Inventory):
@@ -11,5 +11,4 @@ class SlottedInventory(Inventory):
         return len(self._items)
 
     def can_add_item(self, item):
-        # TODO: test
         return self.num_items < self.capacity
