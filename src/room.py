@@ -3,7 +3,7 @@ from src.inventories.slotted_inventory import SlottedInventory
 
 
 class Room:
-    INVENTORY_SLOT_COUNT = 5
+    FLOOR_INVENTORY_SLOT_COUNT = 5
 
     def __init__(self, name, purpose, description, entities=[]):
         self.name = name
@@ -11,7 +11,7 @@ class Room:
         self.description = description
         self.entities = entities
 
-        self.floor_inventory = SlottedInventory(self.INVENTORY_SLOT_COUNT)
+        self.floor_inventory = SlottedInventory(self.FLOOR_INVENTORY_SLOT_COUNT)
         self._level = None
 
     @property
