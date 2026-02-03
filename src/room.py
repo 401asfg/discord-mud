@@ -34,8 +34,8 @@ class Room:
             return in_basic_entities
         
         for character in characters:
-            if entity == character and character.room == self:
-                return True
+            if entity == character:
+                return character.room == self
 
         if self.level is None:
             return in_basic_entities
