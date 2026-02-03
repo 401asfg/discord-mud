@@ -16,6 +16,7 @@ class Room:
 
     @property
     def level(self):
+        # TODO: test
         if self._level is not None:
             return self._level
         
