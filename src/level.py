@@ -28,7 +28,7 @@ class Level:
         return all_passageway_exits
 
 
-def level_builder(passageways: List[Passageway]) -> Level:
+def build_level(passageways: List[Passageway]) -> Level:
     # TODO: test
     # TODO: validate all rooms are reachable from starting_room?
     room_directional_passageway_exits = {}
