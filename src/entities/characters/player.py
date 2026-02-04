@@ -13,12 +13,11 @@ class Player(Character):
         name,
         description,
         entity_status,
-        level,
         room,
         max_carry_weight,
         unarmed_damage
     ):
-        super().__init__(name, description, entity_status, level, room)
+        super().__init__(name, description, entity_status, room)
         self.inventory = WeightedInventory(max_carry_weight)
         self.unarmed_damage = unarmed_damage
         self.weapon = None

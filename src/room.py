@@ -2,6 +2,10 @@ from src.game import levels, characters
 from src.inventories.slotted_inventory import SlottedInventory
 
 
+class NotAssignedToLevelException(Exception):
+    pass
+
+
 class Room:
     FLOOR_INVENTORY_SLOT_COUNT = 5
 
@@ -25,7 +29,10 @@ class Room:
                 self._level = level
                 return self._level
         
-        return None
+        raise NotAssignedToLevelException(f"Room {self} has not been assigned to a level.")
+    
+    def get_exits(self):
+        return self.level.get_passageway_exits(self)
     
     def __contains__(self, entity):
         # TODO: test
@@ -38,9 +45,5 @@ class Room:
             if entity == character:
                 return character.room == self
 
-        if self.level is None:
-            return in_basic_entities
-
-        passageway_exits = self.level.get_passageway_exits(self)
-        doors = [passageway_exit.door for passageway_exit in passageway_exits]
+        doors = [passageway_exit.door for passageway_exit in self.get_exits()]
         return entity in doors

@@ -7,13 +7,8 @@ class TravelException(Exception):
 
 
 class Character(Entity):
-    def __init__(self, name, description, entity_status, level, room):
-        # TODO: test
-        if room not in level:
-            raise ValueError(f"Room {room} does not exist in level.")
-
+    def __init__(self, name, description, entity_status, room):
         super().__init__(name, description, entity_status)
-        self.level = level
         self.room = room
 
     def goto(self, room):
@@ -21,10 +16,9 @@ class Character(Entity):
         if room == self.room:
             raise TravelException(f"Already in room {room}.")
 
-        passageway_exits = self.level.get_passageway_exits(self.room)
         passageway_exit = None
 
-        for pe in passageway_exits:
+        for pe in self.room.get_exits():
             if pe.room == room:
                 passageway_exit = pe
                 break
