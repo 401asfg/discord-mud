@@ -1,6 +1,10 @@
 from entity import Entity
 
 
+class LockedException(Exception):
+    pass
+
+
 class Door(Entity):
     def __init__(self, name, description, entity_status, is_locked=False):
         super().__init__(name, description, entity_status)

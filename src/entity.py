@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 
-class EntityStatusException(Exception):
+class HealthException(Exception):
     pass
 
 
@@ -39,7 +39,7 @@ class EntityStatus:
             raise ValueError("Heal amount must be a non-negative value.")
 
         if not self.is_alive:
-            raise EntityStatusException("Cannot heal an entity that is not alive.")
+            raise HealthException("Cannot heal an entity that is not alive.")
 
         self.hp += hp
 

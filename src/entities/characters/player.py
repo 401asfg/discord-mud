@@ -1,9 +1,9 @@
-from src.entities.character import Character, DistanceException
+from src.entities.character import Character
 from src.inventories.weighted_inventory import WeightedInventory
 from src.inventory import ItemNotFoundException
 
 
-class DistanceException(Exception):
+class NotInRoomException(Exception):
     pass
 
 
@@ -26,7 +26,7 @@ class Player(Character):
     def entity_interaction(self, interact):
         def wrapper(entity, *args, **kwargs):
             if entity not in self.room:
-                raise DistanceException(f"Entity {entity} is not in the same room.")
+                raise NotInRoomException(f"Entity {entity} is not in the same room.")
             return interact(entity, *args, **kwargs)
         return wrapper
     

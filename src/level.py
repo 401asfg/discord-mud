@@ -2,7 +2,7 @@ from passageway import Passageway, PassagewayExit, REVERSE_DIRECTION_MAP
 from typing import List
 
 
-class LevelException(Exception):
+class DuplicateInstanceException(Exception):
     pass
 
 
@@ -52,7 +52,7 @@ def build_level(passageways: List[Passageway]) -> Level:
         door = passageway.door
 
         if door in doors:
-            raise LevelException(f"Duplicate door found: {door}")
+            raise DuplicateInstanceException(f"Duplicate door found: {door}")
         
         doors.add(door)
         

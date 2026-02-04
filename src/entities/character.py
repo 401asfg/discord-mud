@@ -1,4 +1,5 @@
-from entity import Entity
+from src.entity import Entity
+from src.entities.door import LockedException
 
 
 class TravelException(Exception):
@@ -34,7 +35,7 @@ class Character(Entity):
         door = passageway_exit.door
         
         if not door.is_traversable():
-            raise TravelException(f"Door {door} to room {room} is locked.")
+            raise LockedException(f"Door {door} to room {room} is locked.")
         
         self.room = room
     
