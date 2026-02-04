@@ -13,20 +13,25 @@ class MockInventory(Inventory):
 def inventory():
     return MockInventory()
 
+
 @pytest.fixture
 def item_a():
     return Item("Item A", "", 5)    
+
 
 @pytest.fixture
 def item_b():
     return Item("Item B", "", 0)    
 
+
 @pytest.fixture
 def item_c():
     return Item("Item C", "", 30)    
 
+
 def test__init(inventory):
     assert inventory.list_items() == set()
+
 
 def test__add_item__success(inventory, item_a, item_b, item_c):
     inventory.add_item(item_a)
@@ -40,6 +45,7 @@ def test__add_item__success(inventory, item_a, item_b, item_c):
     inventory.add_item(item_c)
     assert inventory.list_items() == {item_a, item_b, item_c}
 
+
 def test__add_item__failure(inventory, item_a):
     class FailingInventory(Inventory):
         def can_add_item(self, item):
@@ -49,6 +55,7 @@ def test__add_item__failure(inventory, item_a):
 
     with pytest.raises(InventoryCapacityException):
         failing_inventory.add_item(item_a)
+
 
 def test__remove_item(inventory, item_a, item_b, item_c):
     inventory.add_item(item_a)
@@ -89,3 +96,79 @@ def test__remove_item(inventory, item_a, item_b, item_c):
     inventory.add_item(item_b)
     inventory.remove_item(item_c)
     assert inventory.list_items() == {item_a, item_b}
+
+
+class OneItemInventory(Inventory):
+    def can_add_item(self, item):
+        return len(self._items) < 1
+
+
+@pytest.fixture
+def inventory_b():
+    return OneItemInventory()
+
+
+def test__send__no_items_to_send(inventory, inventory_b, item_a):
+    with pytest.raises(ItemNotFoundException):
+        inventory.send(inventory_b, item_a, "")
+
+
+def test__send__item_not_in_sender(inventory, inventory_b, item_a, item_b):
+    inventory.add_item(item_a)
+
+    with pytest.raises(ItemNotFoundException):
+        inventory.send(inventory_b, item_b, "")
+
+
+def test__send__receiver_is_at_capacity(inventory, inventory_b, item_a, item_b):
+    inventory.add_item(item_a)
+    inventory_b.add_item(item_b)
+
+    with pytest.raises(InventoryCapacityException):
+        inventory.send(inventory_b, item_a, "")
+
+
+def test__send__item_not_in_sender_and_receiver_is_at_capacity(inventory, inventory_b, item_a, item_b):
+    inventory.add_item(item_a)
+    inventory_b.add_item(item_b)
+
+    with pytest.raises(InventoryCapacityException):
+        inventory.send(inventory_b, item_b, "")
+
+
+def test__send__success(inventory, inventory_b, item_a):
+    inventory.add_item(item_a)
+    inventory.send(inventory_b, item_a, "")
+
+
+def test__receive__no_items_to_send(inventory, inventory_b, item_a):
+    with pytest.raises(ItemNotFoundException):
+        inventory_b.receive(inventory, item_a, "")
+
+
+def test__receive__item_not_in_sender(inventory, inventory_b, item_a, item_b):
+    inventory.add_item(item_a)
+
+    with pytest.raises(ItemNotFoundException):
+        inventory.receive(inventory, item_b, "")
+
+
+def test__receive__receiver_is_at_capacity(inventory, inventory_b, item_a, item_b):
+    inventory.add_item(item_a)
+    inventory_b.add_item(item_b)
+
+    with pytest.raises(InventoryCapacityException):
+        inventory_b.receive(inventory, item_a, "")
+
+
+def test__receive__item_not_in_sender_and_receiver_is_at_capacity(inventory, inventory_b, item_a, item_b):
+    inventory.add_item(item_a)
+    inventory_b.add_item(item_b)
+
+    with pytest.raises(InventoryCapacityException):
+        inventory_b.receive(inventory, item_b, "")
+
+
+def test__receive__success(inventory, inventory_b, item_a):
+    inventory.add_item(item_a)
+    inventory_b.receive(inventory, item_a, "")

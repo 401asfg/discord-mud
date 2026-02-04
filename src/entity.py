@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 
-class HealthException(Exception):
+class MortalityException(Exception):
     pass
 
 
@@ -11,12 +11,18 @@ class EntityStatus:
         # TODO: test
         if max_hp <= 0:
             raise ValueError("Maximum HP must be greater than 0.")
+        
+        if hp < 0:
+            raise ValueError("HP must be greater than 0.")
 
         if hp > max_hp:
             raise ValueError("Current HP cannot exceed maximum HP.")
         
         if not is_alive and hp > 0:
             raise ValueError("An entity cannot have HP greater than 0 if they are not alive.")
+        
+        if is_alive and hp <= 0:
+            raise ValueError("An entity cannot be alive and have hp remaining.")
 
         self.max_hp = max_hp
         self.hp = hp
@@ -39,7 +45,7 @@ class EntityStatus:
             raise ValueError("Heal amount must be a non-negative value.")
 
         if not self.is_alive:
-            raise HealthException("Cannot heal an entity that is not alive.")
+            raise MortalityException("Cannot heal an entity that is not alive.")
 
         self.hp += hp
 

@@ -44,9 +44,7 @@ class Inventory(ABC):
         receiving_inventory.add_item(item)
     
     def send(self, receiving_inventory, item, capacity_exception_msg):
-        # TODO: test
         self._transact(self, receiving_inventory, item, capacity_exception_msg)
     
     def receive(self, sending_inventory, item, capacity_exception_msg):
-        # TODO: test
         self._transact(sending_inventory, self, item, capacity_exception_msg)
