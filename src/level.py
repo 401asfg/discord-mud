@@ -1,8 +1,12 @@
-from passageway import Passageway, PassagewayExit, REVERSE_DIRECTION_MAP
+from passageway import Passageway, PassagewayExit
 from typing import List
 
 
 class DuplicateInstanceException(Exception):
+    pass
+
+
+class RoomNotInLevelException(Exception):
     pass
 
 
@@ -15,6 +19,9 @@ class Level:
     
     def get_passageway_exits(self, room, direction=None):
         # TODO: test
+        if room not in self:
+            raise RoomNotInLevelException("Room is not in this level.")
+
         directional_passageway_exits = self._room_directional_passageway_exits.get(room, {})
 
         if direction is not None:
@@ -40,7 +47,7 @@ def build_level(passageways: List[Passageway]) -> Level:
         directional_passageway_exits = room_directional_passageway_exits[entrance_room]
 
         if direction not in directional_passageway_exits:
-            directional_passageway_exits[direction] = {}
+            directional_passageway_exits[direction] = set()
         
         passageway_exits = directional_passageway_exits[direction]
         passageway_exit = PassagewayExit(door, exit_room)
@@ -60,7 +67,7 @@ def build_level(passageways: List[Passageway]) -> Level:
         entrance_room = passageway.entrance_room
         exit_room = passageway.exit_room
 
-        add_passageway_exit(entrance_room, direction, door, exit_room)
-        add_passageway_exit(exit_room, REVERSE_DIRECTION_MAP[direction], door, entrance_room)
+        add_passageway_exit(entrance_room, direction, PassagewayExit(door, exit_room))
+        add_passageway_exit(exit_room, direction.reverse(), PassagewayExit(door, entrance_room))
     
     return Level(room_directional_passageway_exits)

@@ -1,6 +1,9 @@
 from enum import Enum
 from dataclasses import dataclass
 
+from src.room import Room
+from src.entities.door import Door
+
 
 class Direction(Enum):
     NORTH = "north"
@@ -8,26 +11,23 @@ class Direction(Enum):
     EAST = "east"
     WEST = "west"
 
+    def reverse(self):
+        match self:
+            case Direction.NORTH: return Direction.SOUTH
+            case Direction.SOUTH: return Direction.NORTH
+            case Direction.EAST: return Direction.WEST
+            case Direction.WEST: return Direction.EASt
 
-REVERSE_DIRECTION_MAP = {
-    Direction.NORTH: Direction.SOUTH,
-    Direction.SOUTH: Direction.NORTH,
-    Direction.EAST: Direction.WEST,
-    Direction.WEST: Direction.EAST,
-}
 
-
-@dataclass
+@dataclass(frozen=True)
 class Passageway:
-    def __init__(self, door, direction, entrance_room, exit_room):
-        self.door = door
-        self.direction = direction
-        self.entrance_room = entrance_room
-        self.exit_room = exit_room
+    door: Door
+    direction: Direction
+    entrance_room: Room
+    exit_room: Room
 
 
-@dataclass
+@dataclass(frozen=True)
 class PassagewayExit:
-    def __init__(self, door, room):
-        self.door = door
-        self.room = room
+    door: Door
+    room: Room
