@@ -41,7 +41,7 @@ class Character(Entity):
                 break
 
         if passageway_exit is None:
-            raise TravelException(f"Room {room} is not accessible from room {self.room}.")
+            raise TravelException(f"Room {room} is not directly accessible from room {self.room}.")
         
         door = passageway_exit.door
         
