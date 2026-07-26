@@ -4,7 +4,8 @@ from src.level import Level, build_level, DuplicateInstanceException, RoomNotInL
 from src.room import Room
 from src.entities.door import Door
 from src.entity import EntityStatus
-from src.passageway import Passageway, PassagewayExit, Direction
+from src.passageway import Passageway, PassagewayExit
+from src.utils import Direction
 
 
 class MockRoom(Room):
